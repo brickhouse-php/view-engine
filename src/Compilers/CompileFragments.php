@@ -65,7 +65,7 @@ class CompileFragments
 
         $epilogue = implode([
             '<?php echo $__renderer->renderFragment(); ?>',
-            '<?php $__fragment = $' . $hash . '; ?>',
+            '<?php if(isset($' . $hash . ')) { $__fragment = $' . $hash . '; } ?>',
         ]);
 
         return implode([$prologue, $body, $epilogue]);

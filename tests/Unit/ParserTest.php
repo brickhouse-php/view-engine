@@ -8,40 +8,37 @@ describe('Parser', function () {
     })->throws(\RuntimeException::class);
 
     it('returns node of same html type', function () {
-        $node = new Parser()->parse("<div></div>");
+        $nodes = new Parser()->parse("<div></div>");
 
-        expect($node->type)->toEqual('div');
+        expect($nodes)->toHaveCount(1);
+        expect($nodes[0]->type)->toEqual('div');
     });
 
     it('returns node with text child content', function () {
-        $node = new Parser()->parse("<span>Text</span>");
+        $nodes = new Parser()->parse("<span>Text</span>");
 
-        expect($node->type)->toEqual('span');
-        expect($node->hasChildren())->toBeTrue();
-        expect($node->children[0])->toBe('Text');
+        expect($nodes[0]->type)->toEqual('span');
+        expect($nodes[0]->hasChildren())->toBeTrue();
+        expect($nodes[0]->children[0])->toBe('Text');
     });
 
     it('returns node with node child content', function () {
-        $node = new Parser()->parse("<div><span>Text</span></div>");
+        $nodes = new Parser()->parse("<div><span>Text</span></div>");
 
-        expect($node->type)->toEqual('div');
-        expect($node->children[0]->type)->toEqual('span');
-        expect($node->children[0]->children[0])->toEqual('Text');
+        expect($nodes[0]->type)->toEqual('div');
+        expect($nodes[0]->children[0]->type)->toEqual('span');
+        expect($nodes[0]->children[0]->children[0])->toEqual('Text');
     });
-
-    it('throws exception given multiple root nodes', function () {
-        new Parser()->parse("<div></div><div></div>");
-    })->throws(\RuntimeException::class);
 
     it('returns attributes from node', function () {
-        $node = new Parser()->parse("<span style='red'>Text</span>");
+        $nodes = new Parser()->parse("<span style='red'>Text</span>");
 
-        expect($node->attributes)->toMatchArray(['style' => 'red']);
+        expect($nodes[0]->attributes)->toMatchArray(['style' => 'red']);
     });
 
-    it('returns last attributes from node', function () {
-        $node = new Parser()->parse("<span style='red' style='green'>Text</span>");
+    it('returns first attributes from node', function () {
+        $nodes = new Parser()->parse("<span style='red' style='green'>Text</span>");
 
-        expect($node->attributes)->toMatchArray(['style' => 'green']);
+        expect($nodes[0]->attributes)->toMatchArray(['style' => 'red']);
     });
 });

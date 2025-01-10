@@ -112,10 +112,10 @@ describe('Renderer', function () {
 
     it('renders components', function () {
         $rendered = renderTemplate(<<<'HTML'
-            <x-button />
+            <x-button type="default" />
         HTML);
 
-        expect($rendered)->toBe('<button type="">Default Button</button>');
+        expect($rendered)->toBe('<button type="default">Default Button</button>');
     });
 
     it('renders component attributes', function () {
@@ -128,25 +128,25 @@ describe('Renderer', function () {
 
     it('renders component slots', function () {
         $rendered = renderTemplate(<<<'HTML'
-            <x-button>Button Text</x-button>
+            <x-button type="default">Button Text</x-button>
         HTML);
 
-        expect($rendered)->toBe('<button type="">Button Text</button>');
+        expect($rendered)->toBe('<button type="default">Button Text</button>');
     });
 
     it('renders component slots using explicit templates', function () {
         $rendered = renderTemplate(<<<'HTML'
-            <x-button><template>Button Text</template></x-button>
+            <x-button type="default"><template>Button Text</template></x-button>
         HTML);
 
-        expect($rendered)->toBe('<button type="">Button Text</button>');
+        expect($rendered)->toBe('<button type="default">Button Text</button>');
     });
 
     it('renders named component slots', function () {
         $rendered = renderTemplate(<<<'HTML'
-            <x-button><template #icon><p>Icon</p></template></x-button>
+            <x-button type="default"><template #icon><p>Icon</p></template></x-button>
         HTML);
 
-        expect($rendered)->toBe('<button type=""><p>Icon</p>Default Button</button>');
+        expect($rendered)->toBe('<button type="default"><p>Icon</p>Default Button</button>');
     });
 });

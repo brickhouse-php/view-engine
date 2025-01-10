@@ -2,9 +2,6 @@
 
 namespace Brickhouse\View;
 
-use PHPHtmlParser\Dom;
-use PHPHtmlParser\Dom\Node\AbstractNode;
-
 class Parser
 {
     /**
@@ -12,72 +9,102 @@ class Parser
      *
      * @param string    $template   HTML template to compile into a node tree.
      *
-     * @return Node
+     * @return array<int,Node>
      */
-    public function parse(string $template): Node
+    public function parse(string $template): array
     {
         if (trim($template) === '') {
             throw new \RuntimeException("Attempted to parse empty template.");
         }
 
-        $dom = new Dom;
-        $dom->setOptions(
-            // this is set as the global option level.
-            (new \PHPHtmlParser\Options())
-                ->setWhitespaceTextNode(false)
-                ->setRemoveScripts(false)
-                ->setRemoveStyles(false)
-                ->setRemoveSmartyScripts(false)
+        // The new HTML 5 parser doesn't handle self-closing elements very well,
+        // as it just parses subsequent siblings as children instead.
+        // This simply converts all self-closing HTML tags to explicitly-closing.
+        $template = preg_replace_callback(
+            "/<(?<element>.*?)\/>/",
+            function (array $match) {
+                $closingTag = $match['element'];
+                if (($pos = strpos($closingTag, ' ')) !== false) {
+                    $closingTag = substr($closingTag, 0, $pos);
+                }
+
+                return sprintf(
+                    '<%s></%s>',
+                    $match['element'],
+                    $closingTag,
+                );
+            },
+            $template
         );
 
-        $dom->loadStr($template);
+        $dom = \Dom\HTMLDocument::createFromString(
+            "<div id='brickhouse-app'>{$template}</div>",
+            LIBXML_NOERROR | \Dom\HTML_NO_DEFAULT_NS
+        );
 
-        /** @var \PHPHtmlParser\Dom\Node\HtmlNode $root */
-        $root = $dom->root;
+        $root = $dom->getElementById('brickhouse-app');
 
-        if (!$root->hasChildren()) {
+        if (!$root->hasChildNodes()) {
             throw new \RuntimeException("Root element has no children.");
         }
 
-        if (count($root->getChildren()) !== 1) {
-            throw new \RuntimeException("Template must only have one root element.");
-        }
+        $children = iterator_to_array($root->childNodes->getIterator());
 
-        return $this->parseNode($root->firstChild());
+        return $this->parseNodes($children);
     }
 
     /**
      * Parses the given DOM nodes and compiles them into an array of node trees.
      *
-     * @param array<int,AbstractNode>   $nodes  DOM node to parse.
+     * @param array<int,\Dom\Node>      $nodes  DOM node to parse.
      *
      * @return array<int,Node>
      */
     protected function parseNodes(array $nodes): array
     {
-        return array_map(
-            fn(AbstractNode $node) => $this->parseNode($node),
+        $nodes = array_map(
+            fn(\Dom\Node $node) => $this->parseNode($node),
             $nodes
         );
+
+        return array_values(array_filter($nodes));
     }
 
     /**
      * Parses the given DOM node and compiles it into a node tree.
      *
-     * @param AbstractNode $node   DOM node to parse.
+     * @param \Dom\Node     $node   DOM node to parse.
      *
      * @return Node
      */
-    protected function parseNode(AbstractNode $node): Node
+    protected function parseNode(\Dom\Node $node): string|Node
     {
-        $type = $node->tag->name();
-        $attributes = $node->getAttributes();
-        $children = $this->parseChildContent($node);
+        if ($node instanceof \Dom\Text) {
+            if (trim($node->textContent) === '') {
+                return '';
+            }
 
-        // Prevent the parser from wrapping text-nodes in a `text`-tag.
-        if ($type === 'text' && is_string($children)) {
-            $type = '';
+            return $node->textContent;
         }
+
+        if (!$node instanceof \Dom\Element) {
+            throw new \RuntimeException("Invalid node type: " . $node::class);
+        }
+
+        $type = $node->tagName;
+        $attributes = [];
+
+        /** @var \Dom\Attr $attribute */
+        foreach ($node->attributes as $attribute) {
+            $value = $attribute->value;
+            if (trim($value) === '') {
+                $value = null;
+            }
+
+            $attributes[$attribute->name] = $value;
+        }
+
+        $children = $this->parseChildContent($node);
 
         return new Node($type, $attributes, $children);
     }
@@ -85,28 +112,24 @@ class Parser
     /**
      * Parses the given DOM node and compiles it into a node tree.
      *
-     * @param AbstractNode $node   DOM node to parse.
+     * @param \Dom\Node $node   DOM node to parse.
      *
      * @return array<int,Node>|string
      */
-    protected function parseChildContent(AbstractNode $node): array|string
+    protected function parseChildContent(\Dom\Node $node): array|string
     {
-        if ($node instanceof \PHPHtmlParser\Dom\Node\InnerNode) {
-            if (strip_tags($node->innerHtml()) === $node->innerHtml()) {
-                if ($node->innerHtml() === '') {
-                    return [];
-                }
-
-                return $node->innerHtml();
+        if ($node instanceof \Dom\Text) {
+            if (trim($node->textContent) === '') {
+                return [];
             }
 
-            return $this->parseNodes($node->getChildren());
+            return $node->textContent;
         }
 
-        if ($node instanceof \PHPHtmlParser\Dom\Node\TextNode) {
-            return $node->innerHtml();
+        if ($node instanceof \Dom\Comment) {
+            return [];
         }
 
-        throw new \Exception("Unhandled node type: " . $node::class);
+        return $this->parseNodes(iterator_to_array($node->childNodes->getIterator()));
     }
 }

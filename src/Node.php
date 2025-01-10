@@ -90,12 +90,14 @@ final class Node
 
             $this->children[] = $child;
 
-            if ($idx > 0 && $child instanceof Node) {
-                $child->previousSibling = $children[$idx - 1];
-            }
+            if ($child instanceof Node) {
+                if ($idx > 0 && ($sibling = $children[$idx - 1]) instanceof Node) {
+                    $child->previousSibling = $sibling;
+                }
 
-            if ($idx < count($children) - 1 && $child instanceof Node) {
-                $child->nextSibling = $children[$idx + 1];
+                if ($idx < count($children) - 1 && ($sibling = $children[$idx + 1]) instanceof Node) {
+                    $child->nextSibling = $sibling;
+                }
             }
         }
     }

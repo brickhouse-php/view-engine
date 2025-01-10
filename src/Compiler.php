@@ -39,14 +39,18 @@ class Compiler
     /**
      * Compiles the given node tree and returns content of the compiled view.
      *
-     * @param string|Node   $node           The node tree or template to compile.
+     * @param string|Node|array<int,Node>   $node       The node tree(s) or template to compile.
      *
      * @return string
      */
-    public function compile(string|Node $node): string
+    public function compile(string|Node|array $node): string
     {
         if (is_string($node)) {
             $node = $this->parser->parse($node);
+        }
+
+        if (is_array($node)) {
+            return $this->compileNodes($node);
         }
 
         return $this->compileNode($node);
