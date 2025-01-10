@@ -14,8 +14,8 @@ class LoopAttributes implements Attribute
     public function attributes(): array
     {
         return [
-            'v-for' => AttributeArgument::REQUIRED,
-            'v-foreach' => AttributeArgument::REQUIRED,
+            ':for' => AttributeArgument::REQUIRED,
+            ':foreach' => AttributeArgument::REQUIRED,
         ];
     }
 
@@ -26,11 +26,11 @@ class LoopAttributes implements Attribute
     {
         // @phpstan-ignore match.unhandled
         [$prologue, $epilogue] = match ($attribute) {
-            'v-for' => [
+            ':for' => [
                 "<?php for({$value}): ?>",
                 "<?php endfor; ?>",
             ],
-            'v-foreach' => [
+            ':foreach' => [
                 "<?php foreach({$value}): ?>",
                 "<?php endforeach; ?>",
             ],

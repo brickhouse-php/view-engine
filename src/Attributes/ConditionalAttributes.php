@@ -15,9 +15,9 @@ class ConditionalAttributes implements Attribute
     public function attributes(): array
     {
         return [
-            'v-if' => AttributeArgument::REQUIRED,
-            'v-else-if' => AttributeArgument::REQUIRED,
-            'v-else' => AttributeArgument::NONE,
+            ':if' => AttributeArgument::REQUIRED,
+            ':else-if' => AttributeArgument::REQUIRED,
+            ':else' => AttributeArgument::NONE,
         ];
     }
 
@@ -32,15 +32,15 @@ class ConditionalAttributes implements Attribute
 
         // @phpstan-ignore match.unhandled
         [$prologue, $epilogue] = match ($attribute) {
-            'v-if' => [
+            ':if' => [
                 "<?php if(({$value}) ?? false): ?>",
                 "<?php endif; ?>",
             ],
-            'v-else-if' => [
+            ':else-if' => [
                 "<?php elseif(({$value}) ?? false): ?>",
                 "<?php endif; ?>",
             ],
-            'v-else' => [
+            ':else' => [
                 "<?php else: ?>",
                 "<?php endif; ?>",
             ],
@@ -65,8 +65,8 @@ class ConditionalAttributes implements Attribute
         }
 
         $continuingAttributes = [
-            'v-else-if',
-            'v-else',
+            ':else-if',
+            ':else',
         ];
 
         foreach (array_keys($nextSibling->attributes) as $attribute) {

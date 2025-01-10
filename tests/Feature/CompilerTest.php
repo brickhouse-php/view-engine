@@ -34,6 +34,6 @@ describe('Compiler', function () {
         ->toCompileInto('<div type="<?= $type; ?>">Text</div>');
 
     it('returns node of with conditional attribute')
-        ->expect('<div v-if="$type === \'div\'">Text</div>')
+        ->expect('<div :if="$type === \'div\'">Text</div>')
         ->toCompileInto('<?php if(($type === \'div\') ?? false): ?><div>Text</div><?php endif; ?>');
 });

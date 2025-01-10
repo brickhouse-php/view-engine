@@ -52,13 +52,13 @@ describe('Renderer', function () {
     });
 
     it('renders conditional truthy if-statement', function () {
-        $rendered = renderTemplate('<span v-if="$condition">Condition met</span>', ['condition' => true]);
+        $rendered = renderTemplate('<span :if="$condition">Condition met</span>', ['condition' => true]);
 
         expect($rendered)->toBe("<span>Condition met</span>");
     });
 
     it('renders conditional falsy if-statement', function () {
-        $rendered = renderTemplate('<span v-if="$condition">Condition met</span>', ['condition' => false]);
+        $rendered = renderTemplate('<span :if="$condition">Condition met</span>', ['condition' => false]);
 
         expect($rendered)->toBe("");
     });
@@ -66,8 +66,8 @@ describe('Renderer', function () {
     it('renders conditional else-statements', function (bool $condition, string $expected) {
         $rendered = renderTemplate(<<<'HTML'
             <div>
-                <span v-if="$condition">Condition met</span>
-                <span v-else>Condition not met</span>
+                <span :if="$condition">Condition met</span>
+                <span :else>Condition not met</span>
             </div>
         HTML, ['condition' => $condition]);
 
@@ -80,9 +80,9 @@ describe('Renderer', function () {
     it('renders conditional else-if-statements', function (int $counter, string $expected) {
         $rendered = renderTemplate(<<<'HTML'
             <div>
-                <span v-if="$counter === 0">Counter is zero</span>
-                <span v-else-if="$counter === 1">Counter is one</span>
-                <span v-else>Counter is {{ $counter }}</span>
+                <span :if="$counter === 0">Counter is zero</span>
+                <span :else-if="$counter === 1">Counter is one</span>
+                <span :else>Counter is {{ $counter }}</span>
             </div>
         HTML, ['counter' => $counter]);
 
@@ -96,7 +96,7 @@ describe('Renderer', function () {
 
     it('renders looped statements (for)', function () {
         $rendered = renderTemplate(<<<'HTML'
-            <span v-for="$i = 1; $i <= 3; $i++">Item {{ $i }}</span>
+            <span :for="$i = 1; $i <= 3; $i++">Item {{ $i }}</span>
         HTML);
 
         expect($rendered)->toBe("<span>Item 1</span><span>Item 2</span><span>Item 3</span>");
@@ -104,7 +104,7 @@ describe('Renderer', function () {
 
     it('renders looped statements (foreach)', function () {
         $rendered = renderTemplate(<<<'HTML'
-            <span v-foreach="$elements as $element">Item {{ $element }}</span>
+            <span :foreach="$elements as $element">Item {{ $element }}</span>
         HTML, ['elements' => range(1, 3)]);
 
         expect($rendered)->toBe("<span>Item 1</span><span>Item 2</span><span>Item 3</span>");
