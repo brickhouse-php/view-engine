@@ -13,6 +13,7 @@ class Compiler
      */
     private array $compilers = [
         \Brickhouse\View\Compilers\CompileAttributes::class,
+        \Brickhouse\View\Compilers\CompileLayouts::class,
         \Brickhouse\View\Compilers\CompileFragments::class,
         \Brickhouse\View\Compilers\CompileSlots::class,
         \Brickhouse\View\Compilers\CompileTemplates::class,

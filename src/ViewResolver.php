@@ -19,6 +19,13 @@ class ViewResolver
     public const ALIAS_PREFIX = "x-";
 
     /**
+     * Get the prefix for all layouts.
+     *
+     * @var string
+     */
+    public const LAYOUT_PREFIX = "x-layout::";
+
+    /**
      * Get the delimiter for namespaced components.
      *
      * @var string
@@ -66,6 +73,9 @@ class ViewResolver
      */
     public function resolveLayout(string $alias): string
     {
+        // Strip layout alias prefix
+        $alias = substr($alias, strlen(self::LAYOUT_PREFIX));
+
         $path = ltrim($alias, '/\\');
         $path = str_replace(['.', '/', '\\'], ['/', '/', '/'], $path) . self::EXTENSION;
         $path = $this->path($this->basePath, 'app', 'views', 'layouts', $path);

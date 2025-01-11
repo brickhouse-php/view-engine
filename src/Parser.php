@@ -37,12 +37,22 @@ class Parser
             $template
         );
 
-        $dom = \Dom\HTMLDocument::createFromString(
-            "<div id='brickhouse-app'>{$template}</div>",
-            LIBXML_NOERROR | \Dom\HTML_NO_DEFAULT_NS
-        );
+        // The parser doesn't handle HTML documents with the 'DOCTYPE' gracefully, so we'll remove it.
+        if (str_starts_with(trim($template), "<!DOCTYPE")) {
+            $template = preg_replace("/<!DOCTYPE.*?\>/", "", $template, limit: 1);
 
-        $root = $dom->getElementById('brickhouse-app');
+            $root = \Dom\HTMLDocument::createFromString(
+                $template,
+                LIBXML_NOERROR | \Dom\HTML_NO_DEFAULT_NS
+            );
+        } else {
+            $dom = \Dom\HTMLDocument::createFromString(
+                "<div id='brickhouse-app'>{$template}</div>",
+                LIBXML_NOERROR | \Dom\HTML_NO_DEFAULT_NS
+            );
+
+            $root = $dom->getElementById('brickhouse-app');
+        }
 
         if (!$root->hasChildNodes()) {
             throw new \RuntimeException("Root element has no children.");

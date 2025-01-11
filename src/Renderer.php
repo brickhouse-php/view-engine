@@ -39,6 +39,7 @@ class Renderer
         $data = [
             ...$data,
             '__renderer' => $this,
+            '__fragment' => end($this->fragmentRenderStack),
         ];
 
         return $this->renderCompiledTemplate($compiled, $data);
@@ -138,7 +139,7 @@ class Renderer
      */
     public function renderFragment(): string
     {
-        $fragment = array_pop($this->fragmentRenderStack);
+        $fragment = end($this->fragmentRenderStack);
         $componentPath = $this->viewResolver->resolveComponent($fragment->alias);
 
         $data = [
@@ -147,7 +148,10 @@ class Renderer
             'slots' => $fragment->slots,
         ];
 
-        return $this->renderFile($componentPath, $data);
+        $rendered = $this->renderFile($componentPath, $data);
+        array_pop($this->fragmentRenderStack);
+
+        return $rendered;
     }
 
     /**
@@ -218,5 +222,40 @@ class Renderer
         }
 
         return $defaultContent;
+    }
+
+    /**
+     * Starts the rendering process of the given fragment alias.
+     *
+     * @param string                $alias
+     *
+     * @return Fragment
+     */
+    public function startLayout(string $alias, array $attributes): Fragment
+    {
+        $fragment = $this->fragmentRenderStack[] = new Fragment($alias, $attributes);
+
+        return $fragment;
+    }
+
+    /**
+     * Render the next fragment in the fragment stack.
+     *
+     * @return string
+     */
+    public function renderLayout(): string
+    {
+        $fragment = end($this->fragmentRenderStack);
+        $layoutPath = $this->viewResolver->resolveLayout($fragment->alias);
+
+        $data = [
+            ...$fragment->attributes,
+            'slots' => $fragment->slots,
+        ];
+
+        $rendered = $this->renderFile($layoutPath, $data);
+        array_pop($this->fragmentRenderStack);
+
+        return $rendered;
     }
 }
