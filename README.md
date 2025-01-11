@@ -1,4 +1,4 @@
-# Brickhouse View
+# Brickhouse View Engine
 
 This library is a templating engine for PHP applications. It has taken inspiration from [Blade](https://laravel.com/docs/11.x/blade), [Vue](https://vuejs.org) and [Tempest](https://github.com/tempestphp/tempest-framework).
 
@@ -7,7 +7,7 @@ This library is a templating engine for PHP applications. It has taken inspirati
 To install the library, you need to require the package via composer:
 
 ```bash
-composer require brickhouse/view
+composer require brickhouse/view-engine
 ```
 
 ## Usage
@@ -15,7 +15,7 @@ composer require brickhouse/view
 To compile and render views, you need to create a resolver for views:
 
 ```php
-use Brickhouse\View;
+use Brickhouse\View\Engine\Engine;
 
 $resolver = new ViewResolver(basePath: __DIR__);
 $renderer = new Renderer($resolver);

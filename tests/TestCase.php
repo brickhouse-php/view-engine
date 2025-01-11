@@ -1,6 +1,6 @@
 <?php
 
-namespace Brickhouse\View\Tests;
+namespace Brickhouse\View\Engine\Tests;
 
 abstract class TestCase extends \PHPUnit\Framework\TestCase
 {

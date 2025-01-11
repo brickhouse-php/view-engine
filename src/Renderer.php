@@ -1,6 +1,6 @@
 <?php
 
-namespace Brickhouse\View;
+namespace Brickhouse\View\Engine;
 
 class Renderer
 {

@@ -1,7 +1,7 @@
 <?php
 
-use Brickhouse\View\Renderer;
-use Brickhouse\View\ViewResolver;
+use Brickhouse\View\Engine\Renderer;
+use Brickhouse\View\Engine\ViewResolver;
 
 /**
  * Renders the given template into a fully-rendered HTML document.

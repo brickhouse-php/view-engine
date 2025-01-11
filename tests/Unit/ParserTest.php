@@ -1,6 +1,6 @@
 <?php
 
-use Brickhouse\View\Parser;
+use Brickhouse\View\Engine\Parser;
 
 describe('Parser', function () {
     it('throws exception given empty template', function () {

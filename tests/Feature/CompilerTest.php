@@ -1,7 +1,7 @@
 <?php
 
-use Brickhouse\View\Compiler;
-use Brickhouse\View\Parser;
+use Brickhouse\View\Engine\Compiler;
+use Brickhouse\View\Engine\Parser;
 
 expect()->extend('toCompileInto', function (string $expected) {
     $node = new Parser()->parse($this->value);

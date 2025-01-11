@@ -1,6 +1,6 @@
 <?php
 
-use Brickhouse\View\Tests;
+use Brickhouse\View\Engine\Tests;
 
 $initialErrorLevel = 0;
 

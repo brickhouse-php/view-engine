@@ -1,7 +1,7 @@
 <?php
 
-use Brickhouse\View\Compiler;
-use Brickhouse\View\Node;
+use Brickhouse\View\Engine\Compiler;
+use Brickhouse\View\Engine\Node;
 
 describe('CompileInterpolation', function () {
     it('skips attributes without value', function () {

@@ -1,6 +1,6 @@
 <?php
 
-use Brickhouse\View\Node;
+use Brickhouse\View\Engine\Node;
 
 describe('Node', function () {
     it('creates node with same type', function () {

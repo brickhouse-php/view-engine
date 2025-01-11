@@ -1,10 +1,10 @@
 <?php
 
-namespace Brickhouse\View\Attributes;
+namespace Brickhouse\View\Engine\Attributes;
 
-use Brickhouse\View\Attribute;
-use Brickhouse\View\AttributeArgument;
-use Brickhouse\View\CompilerContext;
+use Brickhouse\View\Engine\Attribute;
+use Brickhouse\View\Engine\AttributeArgument;
+use Brickhouse\View\Engine\CompilerContext;
 
 class LoopAttributes implements Attribute
 {

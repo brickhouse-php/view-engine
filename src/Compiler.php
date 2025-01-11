@@ -1,6 +1,6 @@
 <?php
 
-namespace Brickhouse\View;
+namespace Brickhouse\View\Engine;
 
 class Compiler
 {
@@ -12,12 +12,12 @@ class Compiler
      * @return array<int,callable(CompilerContext $context): string>
      */
     private array $compilers = [
-        \Brickhouse\View\Compilers\CompileAttributes::class,
-        \Brickhouse\View\Compilers\CompileLayouts::class,
-        \Brickhouse\View\Compilers\CompileFragments::class,
-        \Brickhouse\View\Compilers\CompileSlots::class,
-        \Brickhouse\View\Compilers\CompileTemplates::class,
-        \Brickhouse\View\Compilers\CompileInterpolation::class,
+        \Brickhouse\View\Engine\Compilers\CompileAttributes::class,
+        \Brickhouse\View\Engine\Compilers\CompileLayouts::class,
+        \Brickhouse\View\Engine\Compilers\CompileFragments::class,
+        \Brickhouse\View\Engine\Compilers\CompileSlots::class,
+        \Brickhouse\View\Engine\Compilers\CompileTemplates::class,
+        \Brickhouse\View\Engine\Compilers\CompileInterpolation::class,
     ];
 
     /**
@@ -39,14 +39,14 @@ class Compiler
         $this->parser = new Parser;
 
         $this->addAttributes([
-            \Brickhouse\View\Attributes\ConditionalAttributes::class,
-            \Brickhouse\View\Attributes\LoopAttributes::class,
+            \Brickhouse\View\Engine\Attributes\ConditionalAttributes::class,
+            \Brickhouse\View\Engine\Attributes\LoopAttributes::class,
         ]);
 
         $this->addHelpers([
-            \Brickhouse\View\Helpers\Description::class,
-            \Brickhouse\View\Helpers\Keywords::class,
-            \Brickhouse\View\Helpers\Robots::class,
+            \Brickhouse\View\Engine\Helpers\Description::class,
+            \Brickhouse\View\Engine\Helpers\Keywords::class,
+            \Brickhouse\View\Engine\Helpers\Robots::class,
         ]);
     }
 

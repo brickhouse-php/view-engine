@@ -1,5 +1,5 @@
 {
-    "name": "brickhouse/view",
+    "name": "brickhouse/view-engine",
     "description": "Frontend functionality for Brickhouse",
     "type": "library",
     "license": "MIT",
@@ -9,10 +9,10 @@
         "brickhouse",
         "mvc"
     ],
-    "homepage": "https://github.com/maxnatamo/brickhouse-view",
+    "homepage": "https://github.com/maxnatamo/brickhouse-view-engine",
     "support": {
-        "issues": "https://github.com/maxnatamo/brickhouse-view/issues",
-        "source": "https://github.com/maxnatamo/brickhouse-view"
+        "issues": "https://github.com/maxnatamo/brickhouse-view-engine/issues",
+        "source": "https://github.com/maxnatamo/brickhouse-view-engine"
     },
     "minimum-stability": "stable",
     "prefer-stable": true,
@@ -43,7 +43,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Brickhouse\\View\\": "src/"
+            "Brickhouse\\View\\Engine\\": "src/"
         },
         "classmap": [
             "src/"
@@ -51,8 +51,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Brickhouse\\View\\Tests\\": "tests/",
-            "Brickhouse\\View\\Benchmarks\\": "bench/"
+            "Brickhouse\\View\\Engine\\Tests\\": "tests/",
+            "Brickhouse\\View\\Engine\\Benchmarks\\": "bench/"
         }
     },
     "config": {

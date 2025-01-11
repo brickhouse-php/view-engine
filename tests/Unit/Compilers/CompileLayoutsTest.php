@@ -1,7 +1,7 @@
 <?php
 
-use Brickhouse\View\Compiler;
-use Brickhouse\View\Parser;
+use Brickhouse\View\Engine\Compiler;
+use Brickhouse\View\Engine\Parser;
 
 describe('CompileLayouts', function () {
     it('wraps layout in template given string content', function () {

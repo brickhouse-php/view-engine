@@ -1,9 +1,9 @@
 <?php
 
-namespace Brickhouse\View\Helpers;
+namespace Brickhouse\View\Engine\Helpers;
 
-use Brickhouse\View\Compiler;
-use Brickhouse\View\Helper;
+use Brickhouse\View\Engine\Compiler;
+use Brickhouse\View\Engine\Helper;
 
 class Robots implements Helper
 {

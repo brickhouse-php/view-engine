@@ -1,8 +1,8 @@
 <?php
 
-namespace Brickhouse\View\Compilers;
+namespace Brickhouse\View\Engine\Compilers;
 
-use Brickhouse\View\CompilerContext;
+use Brickhouse\View\Engine\CompilerContext;
 
 class CompileInterpolation
 {

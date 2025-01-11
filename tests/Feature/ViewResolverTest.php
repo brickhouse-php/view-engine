@@ -1,6 +1,6 @@
 <?php
 
-use Brickhouse\View\ViewResolver;
+use Brickhouse\View\Engine\ViewResolver;
 
 describe('ViewResolver', function () {
     it('resolves view alias to the view path', function (string $alias, string $expected) {

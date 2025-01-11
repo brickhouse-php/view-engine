@@ -1,10 +1,10 @@
 <?php
 
-namespace Brickhouse\View\Compilers;
+namespace Brickhouse\View\Engine\Compilers;
 
-use Brickhouse\View\CompilerContext;
-use Brickhouse\View\Node;
-use Brickhouse\View\ViewResolver;
+use Brickhouse\View\Engine\CompilerContext;
+use Brickhouse\View\Engine\Node;
+use Brickhouse\View\Engine\ViewResolver;
 
 class CompileLayouts
 {

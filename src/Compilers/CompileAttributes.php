@@ -1,10 +1,10 @@
 <?php
 
-namespace Brickhouse\View\Compilers;
+namespace Brickhouse\View\Engine\Compilers;
 
-use Brickhouse\View\Attribute;
-use Brickhouse\View\AttributeArgument;
-use Brickhouse\View\CompilerContext;
+use Brickhouse\View\Engine\Attribute;
+use Brickhouse\View\Engine\AttributeArgument;
+use Brickhouse\View\Engine\CompilerContext;
 
 class CompileAttributes
 {

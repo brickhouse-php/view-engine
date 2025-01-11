@@ -1,7 +1,7 @@
 <?php
 
-use Brickhouse\View\Renderer;
-use Brickhouse\View\ViewResolver;
+use Brickhouse\View\Engine\Renderer;
+use Brickhouse\View\Engine\ViewResolver;
 
 describe('Renderer', function () {
     it('throws exception given invalid file path', function () {
