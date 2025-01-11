@@ -32,7 +32,7 @@ describe('ViewResolver', function () {
 
         expect($path)->toBe($expected);
     })->with([
-        ['shop', '/home/max/brickhouse/app/views/layouts/shop.view.php'],
-        ['shop/product', '/home/max/brickhouse/app/views/layouts/shop/product.view.php'],
+        ['x-layout::shop', '/home/max/brickhouse/app/views/layouts/shop.view.php'],
+        ['x-layout::shop/product', '/home/max/brickhouse/app/views/layouts/shop/product.view.php'],
     ]);
 });
