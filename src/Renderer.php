@@ -258,4 +258,16 @@ class Renderer
 
         return $rendered;
     }
+
+    public function renderHelper(string $helper, array $args = []): string
+    {
+        $helpers = $this->compiler->helpers;
+
+        $handler = $helpers[$helper] ?? null;
+        if (!$handler) {
+            return "";
+        }
+
+        return $handler($args);
+    }
 }

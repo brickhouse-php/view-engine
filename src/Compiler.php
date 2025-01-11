@@ -27,6 +27,13 @@ class Compiler
      */
     public protected(set) array $attributes = [];
 
+    /**
+     * Get all the helper handlers which are supported by the compiler.
+     *
+     * @return array<string,Helper>
+     */
+    public protected(set) array $helpers = [];
+
     public function __construct()
     {
         $this->parser = new Parser;
@@ -35,6 +42,8 @@ class Compiler
             \Brickhouse\View\Attributes\ConditionalAttributes::class,
             \Brickhouse\View\Attributes\LoopAttributes::class,
         ]);
+
+        $this->addHelpers([]);
     }
 
     /**
@@ -103,6 +112,86 @@ class Compiler
         );
 
         return implode($nodes);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function compileHelpers(string $template): string
+    {
+        $pattern = "/\B@(@?\w+)(?:[ \t]*)(\( ( [\S\s]*? ) \))?/x";
+
+        while (preg_match($pattern, $template, $matches, PREG_OFFSET_CAPTURE)) {
+            $match = [
+                'match' => $matches[0],
+                'helper' => $matches[1],
+                'arguments' => $matches[2] ?? null,
+            ];
+
+            $helper = $match['helper'][0];
+
+            if (isset($match['arguments'])) {
+                $arguments = $this->compileHelperArguments($template, $match);
+            } else {
+                $arguments = "[]";
+            }
+
+            $template = substr_replace(
+                $template,
+                '<?php echo $__renderer->renderHelper("' . $helper . '", ' . $arguments . ') ?>',
+                $match['match'][1],
+                strlen($match['match'][0])
+            );
+        }
+
+        return $template;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function compileHelperArguments(string $template, array $matches): string
+    {
+        if (strpos($template, "(") === false) {
+            return $template;
+        }
+
+        $hasEvenNumberOfParentheses = function (string $expression): bool {
+            if ($expression[strlen($expression) - 1] !== ')') {
+                return false;
+            }
+
+            $difference = 0;
+
+            for ($i = 0; $i < strlen($expression); $i++) {
+                $token = $expression[$i];
+
+                if ($token === ')') {
+                    $difference--;
+                } else if ($token === '(') {
+                    $difference++;
+                }
+            }
+
+            return $difference === 0;
+        };
+
+        $start = $matches['arguments'][1];
+        $offset = strpos($template, ')', $start);
+
+        do {
+            if ($offset === false) {
+                return "";
+            }
+
+            $segment = substr($template, $start, $offset - $start + 1);
+
+            if ($hasEvenNumberOfParentheses($segment)) {
+                return substr($segment, 1, -1);
+            }
+
+            $offset = strpos($template, ')', $offset + 1);
+        } while (true);
     }
 
     /**
@@ -209,6 +298,30 @@ class Compiler
     {
         foreach ($attributes as $attribute) {
             $this->addAttribute($attribute);
+        }
+    }
+
+    /**
+     * Adds a new helper to the compiler.
+     *
+     * @param   class-string<Helper>    $helper
+     */
+    public function addHelper(string $helper): void
+    {
+        $instance = new $helper;
+
+        $this->helpers[$instance->tag] = $instance;
+    }
+
+    /**
+     * Adds new helpers to the compiler.
+     *
+     * @param   array<int,class-string<Helper>>     $helpers
+     */
+    public function addHelpers(array $helpers): void
+    {
+        foreach ($helpers as $helper) {
+            $this->addHelper($helper);
         }
     }
 }
