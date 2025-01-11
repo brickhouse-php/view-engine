@@ -218,4 +218,16 @@ describe('Renderer', function () {
         <html><head><title>Example Title</title></head><body><h1>Navigation</h1><h1>Custom Title</h1></body></html>
         HTML);
     });
+
+    it('renders helpers in the template', function (string $template, string $expected) {
+        $rendered = renderTemplate($template);
+
+        expect($rendered)->toBe($expected);
+    })->with([
+        ['@description("Some custom description")', '<meta name="description" content="Some custom description" />'],
+        ['@robots("noindex, nofollow")', '<meta name="robots" content="noindex, nofollow" />'],
+        ['@robots(["noindex", "nofollow"])', '<meta name="robots" content="noindex, nofollow" />'],
+        ['@keywords("meta tags, keyword tags")', '<meta name="keywords" content="meta tags, keyword tags" />'],
+        ['@keywords(["meta tags", "keyword tags"])', '<meta name="keywords" content="meta tags, keyword tags" />'],
+    ]);
 });

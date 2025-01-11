@@ -259,7 +259,7 @@ class Renderer
         return $rendered;
     }
 
-    public function renderHelper(string $helper, array $args = []): string
+    public function renderHelper(string $helper, mixed ...$args): string
     {
         $helpers = $this->compiler->helpers;
 
@@ -268,6 +268,6 @@ class Renderer
             return "";
         }
 
-        return $handler($args);
+        return $handler($this->compiler, ...$args);
     }
 }

@@ -43,7 +43,11 @@ class Compiler
             \Brickhouse\View\Attributes\LoopAttributes::class,
         ]);
 
-        $this->addHelpers([]);
+        $this->addHelpers([
+            \Brickhouse\View\Helpers\Description::class,
+            \Brickhouse\View\Helpers\Keywords::class,
+            \Brickhouse\View\Helpers\Robots::class,
+        ]);
     }
 
     /**
@@ -60,10 +64,14 @@ class Compiler
         }
 
         if (is_array($node)) {
-            return $this->compileNodes($node);
+            $template = $this->compileNodes($node);
+        } else {
+            $template = $this->compileNode($node);
         }
 
-        return $this->compileNode($node);
+        $template = $this->compileHelpers($template);
+
+        return $template;
     }
 
     /**
@@ -115,7 +123,11 @@ class Compiler
     }
 
     /**
-     * @inheritDoc
+     * Compile helpers from the given template into their respective replacements.
+     *
+     * @param string    $template       Template to compile helpers for.
+     *
+     * @return string
      */
     protected function compileHelpers(string $template): string
     {
@@ -131,7 +143,7 @@ class Compiler
             $helper = $match['helper'][0];
 
             if (isset($match['arguments'])) {
-                $arguments = $this->compileHelperArguments($template, $match);
+                $arguments = $this->compileHelperArguments($template, $match['arguments'][1]);
             } else {
                 $arguments = "[]";
             }
@@ -148,9 +160,14 @@ class Compiler
     }
 
     /**
-     * @inheritDoc
+     * Compile the arguments for helpers in the given template.
+     *
+     * @param string    $template       Template to compile helpers for.
+     * @param int       $start          Start index into `$template` where an argument list starts.
+     *
+     * @return string
      */
-    protected function compileHelperArguments(string $template, array $matches): string
+    protected function compileHelperArguments(string $template, int $start): string
     {
         if (strpos($template, "(") === false) {
             return $template;
@@ -176,7 +193,6 @@ class Compiler
             return $difference === 0;
         };
 
-        $start = $matches['arguments'][1];
         $offset = strpos($template, ')', $start);
 
         do {
