@@ -29,10 +29,19 @@ class Renderer
 
     public function __construct(
         public readonly ViewResolver $viewResolver,
+        null|Compiler $compiler = null,
     ) {
-        $this->compiler = new Compiler();
+        $this->compiler = $compiler ?? new Compiler();
     }
 
+    /**
+     * Render the given template content into a fully-rendered HTML document.
+     *
+     * @param string    $template       Template content to render.
+     * @param array     $data           Optional data to pass to the template.
+     *
+     * @return string
+     */
     public function render(string $template, array $data = []): string
     {
         $compiled = $this->compiler->compile($template);
@@ -45,6 +54,14 @@ class Renderer
         return $this->renderCompiledTemplate($compiled, $data);
     }
 
+    /**
+     * Render the template at the given file path into a fully-rendered HTML document.
+     *
+     * @param string    $path       Template file path to render.
+     * @param array     $data       Optional data to pass to the template.
+     *
+     * @return string
+     */
     public function renderFile(string $path, array $data = []): string
     {
         $content = file_get_contents($path);
@@ -265,6 +282,14 @@ class Renderer
         return $rendered;
     }
 
+    /**
+     * Render the given helper into it's replacement string.
+     *
+     * @param string    $helper     The name of the helper
+     * @param mixed     $args       Args to pass to the helper.
+     *
+     * @return string
+     */
     public function renderHelper(string $helper, mixed ...$args): string
     {
         $helpers = $this->compiler->helpers;
