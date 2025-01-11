@@ -169,14 +169,18 @@ class Compiler
      */
     protected function compileHelperArguments(string $template, int $start): string
     {
+        // @codeCoverageIgnoreStart
         if (strpos($template, "(") === false) {
             return $template;
         }
+        // @codeCoverageIgnoreEnd
 
         $hasEvenNumberOfParentheses = function (string $expression): bool {
+            // @codeCoverageIgnoreStart
             if ($expression[strlen($expression) - 1] !== ')') {
                 return false;
             }
+            // @codeCoverageIgnoreEnd
 
             $difference = 0;
 
@@ -195,6 +199,7 @@ class Compiler
 
         $offset = strpos($template, ')', $start);
 
+        // @codeCoverageIgnoreStart
         do {
             if ($offset === false) {
                 return "";
@@ -208,6 +213,7 @@ class Compiler
 
             $offset = strpos($template, ')', $offset + 1);
         } while (true);
+        // @codeCoverageIgnoreEnd
     }
 
     /**

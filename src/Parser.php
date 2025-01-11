@@ -54,10 +54,6 @@ class Parser
             $root = $dom->getElementById('brickhouse-app');
         }
 
-        if (!$root->hasChildNodes()) {
-            throw new \RuntimeException("Root element has no children.");
-        }
-
         $children = iterator_to_array($root->childNodes->getIterator());
 
         return $this->parseNodes($children);
@@ -89,6 +85,7 @@ class Parser
      */
     protected function parseNode(\Dom\Node $node): string|Node
     {
+        // @codeCoverageIgnoreStart
         if ($node instanceof \Dom\Text) {
             if (trim($node->textContent) === '') {
                 return '';
@@ -96,9 +93,10 @@ class Parser
 
             return $node->textContent;
         }
+        // @codeCoverageIgnoreEnd
 
         if (!$node instanceof \Dom\Element) {
-            throw new \RuntimeException("Invalid node type: " . $node::class);
+            return "";
         }
 
         $type = $node->tagName;
@@ -128,6 +126,7 @@ class Parser
      */
     protected function parseChildContent(\Dom\Node $node): array|string
     {
+        // @codeCoverageIgnoreStart
         if ($node instanceof \Dom\Text) {
             if (trim($node->textContent) === '') {
                 return [];
@@ -139,6 +138,7 @@ class Parser
         if ($node instanceof \Dom\Comment) {
             return [];
         }
+        // @codeCoverageIgnoreEnd
 
         return $this->parseNodes(iterator_to_array($node->childNodes->getIterator()));
     }

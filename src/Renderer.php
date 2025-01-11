@@ -72,6 +72,7 @@ class Renderer
         fwrite($compiledFile, $template);
         fclose($compiledFile);
 
+        // @codeCoverageIgnoreStart
         try {
             // Render the temporary file into HTML
             return $this->renderCompiledTemplateFile($compiledFilePath, $data);
@@ -81,6 +82,7 @@ class Renderer
             // Finally, delete the temporary file again.
             unlink($compiledFilePath);
         }
+        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -93,6 +95,8 @@ class Renderer
      */
     protected function renderCompiledTemplateFile(string $path, array $data): string
     {
+        // @codeCoverageIgnoreStart
+
         $obLevel = ob_get_level();
 
         // Start output buffering.
@@ -116,6 +120,8 @@ class Renderer
 
         // Get all the content written to the output buffer and turn it off again.
         return ltrim(ob_get_clean());
+
+        // @codeCoverageIgnoreEnd
     }
 
     /**

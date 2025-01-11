@@ -41,4 +41,20 @@ describe('Parser', function () {
 
         expect($nodes[0]->attributes)->toMatchArray(['style' => 'red']);
     });
+
+    it('skips comments', function () {
+        $nodes = new Parser()->parse("<div><!-- Some comment --></div>");
+
+        expect($nodes)->toHaveCount(1);
+        expect($nodes[0]->type)->toEqual('div');
+        expect($nodes[0]->children)->toBeEmpty();
+    });
+
+    it('skips empty text nodes', function () {
+        $nodes = new Parser()->parse("<div>\t</div>");
+
+        expect($nodes)->toHaveCount(1);
+        expect($nodes[0]->type)->toEqual('div');
+        expect($nodes[0]->children)->toBeEmpty();
+    });
 });

@@ -224,6 +224,7 @@ describe('Renderer', function () {
 
         expect($rendered)->toBe($expected);
     })->with([
+        ['@invalid', ''],
         ['@description("Some custom description")', '<meta name="description" content="Some custom description" />'],
         ['@robots("noindex, nofollow")', '<meta name="robots" content="noindex, nofollow" />'],
         ['@robots(["noindex", "nofollow"])', '<meta name="robots" content="noindex, nofollow" />'],

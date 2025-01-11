@@ -154,6 +154,10 @@ final class Node
             if (count($this->children) > 0) {
                 $child->previousSibling = $this->children[count($this->children) - 1];
             }
+
+            if (!empty($this->children) && $this->children[count($this->children) - 1] instanceof Node) {
+                $this->children[count($this->children) - 1]->nextSibling = $child;
+            }
         }
 
         $this->children[] = $child;

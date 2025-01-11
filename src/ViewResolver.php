@@ -16,21 +16,21 @@ class ViewResolver
      *
      * @var string
      */
-    public const ALIAS_PREFIX = "x-";
+    public const string ALIAS_PREFIX = "x-";
 
     /**
      * Get the prefix for all layouts.
      *
      * @var string
      */
-    public const LAYOUT_PREFIX = "x-layout::";
+    public const string LAYOUT_PREFIX = "x-layout::";
 
     /**
      * Get the delimiter for namespaced components.
      *
      * @var string
      */
-    public const NAMESPACE_DELIMITER = "::";
+    public const string NAMESPACE_DELIMITER = "::";
 
     /**
      * Gets the base path to look for views.
