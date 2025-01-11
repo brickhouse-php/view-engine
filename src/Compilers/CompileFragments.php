@@ -29,18 +29,7 @@ class CompileFragments
             $context->node->addChild($templateNode);
         }
 
-        $body = array_map(
-            function (string|Node $child) use ($context) {
-                if (is_string($child)) {
-                    return $child;
-                }
-
-                return $context->compiler->compileNode($child);
-            },
-            $context->node->children
-        );
-
-        $body = implode($body);
+        $body = $context->compiler->compileNodes($context->node->children);
 
         return $this->emplaceFragmentStructure($alias, $data, $body);
     }
