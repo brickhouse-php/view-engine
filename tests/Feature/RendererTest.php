@@ -149,4 +149,73 @@ describe('Renderer', function () {
 
         expect($rendered)->toBe('<button type="default"><p>Icon</p>Default Button</button>');
     });
+
+    it('renders layouts', function () {
+        $rendered = renderTemplate(<<<'HTML'
+            <x-layout::default>
+                <h1>Title</h1>
+            </x-layout::default>
+        HTML);
+
+        expect($rendered)->toBe(<<<'HTML'
+        <html><head><title>Example Title</title></head><body><h1>Title</h1></body></html>
+        HTML);
+    });
+
+    it('renders layouts with attributes', function () {
+        $rendered = renderTemplate(<<<'HTML'
+            <x-layout::titled title="Testing">
+                <h1>Title</h1>
+            </x-layout::titled>
+        HTML);
+
+        expect($rendered)->toBe(<<<'HTML'
+        <html><head><title>Testing</title></head><body><h1>Title</h1></body></html>
+        HTML);
+    });
+
+    it('renders layouts with default slot', function () {
+        $rendered = renderTemplate(<<<'HTML'
+            <x-layout::default>
+                <template>
+                    <h1>Title</h1>
+                </template>
+            </x-layout::default>
+        HTML);
+
+        expect($rendered)->toBe(<<<'HTML'
+        <html><head><title>Example Title</title></head><body><h1>Title</h1></body></html>
+        HTML);
+    });
+
+    it('renders layouts with named slot', function () {
+        $rendered = renderTemplate(<<<'HTML'
+            <x-layout::navbar>
+                <template #navbar>
+                    <h1>Navigation</h1>
+                </template>
+            </x-layout::navbar>
+        HTML);
+
+        expect($rendered)->toBe(<<<'HTML'
+        <html><head><title>Example Title</title></head><body><h1>Navigation</h1>Default Content</body></html>
+        HTML);
+    });
+
+    it('renders layouts with mulitple named slots', function () {
+        $rendered = renderTemplate(<<<'HTML'
+            <x-layout::navbar>
+                <template #navbar>
+                    <h1>Navigation</h1>
+                </template>
+                <template>
+                    <h1>Custom Title</h1>
+                </template>
+            </x-layout::navbar>
+        HTML);
+
+        expect($rendered)->toBe(<<<'HTML'
+        <html><head><title>Example Title</title></head><body><h1>Navigation</h1><h1>Custom Title</h1></body></html>
+        HTML);
+    });
 });
