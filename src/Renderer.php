@@ -2,6 +2,8 @@
 
 namespace Brickhouse\View\Engine;
 
+use Brickhouse\View\Engine\Exceptions\ViewNotFoundException;
+
 class Renderer
 {
     /**
@@ -64,9 +66,9 @@ class Renderer
      */
     public function renderFile(string $path, array $data = []): string
     {
-        $content = file_get_contents($path);
+        $content = @file_get_contents($path);
         if ($content === false) {
-            throw new \RuntimeException("Cannot read template fine: {$path}");
+            throw new ViewNotFoundException($path);
         }
 
         return $this->render($content, $data);
