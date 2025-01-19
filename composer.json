@@ -32,8 +32,7 @@
         "bench": "phpbench run --report=default"
     },
     "require": {
-        "php": "^8.4",
-        "paquettg/php-html-parser": "^3.1"
+        "php": "^8.4"
     },
     "require-dev": {
         "phpstan/phpstan": "^2.0",
