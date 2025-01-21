@@ -11,21 +11,21 @@ class Renderer
      *
      * @var array<int,Fragment>
      */
-    private array $fragmentRenderStack = [];
+    protected array $fragmentRenderStack = [];
 
     /**
      * Gets a stack of all the rendered templates in the current compile process.
      *
      * @var array<int,array{name:string,fragment:Fragment}>
      */
-    private array $templateRenderStack = [];
+    protected array $templateRenderStack = [];
 
     /**
      * Gets a stack of all the rendered slots in the current compile process.
      *
      * @var array<int,array{fragment:Fragment,name:string}>
      */
-    private array $slotRenderStack = [];
+    protected array $slotRenderStack = [];
 
     protected readonly Compiler $compiler;
 
