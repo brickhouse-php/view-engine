@@ -15,15 +15,15 @@ expect()->extend('toCompileInto', function (string $expected) {
 describe('Compiler', function () {
     it('returns node of same html type')
         ->expect("<div></div>")
-        ->toCompileInto('<div />');
+        ->toCompileInto('<div></div>');
 
     it('returns node of with same attributes')
         ->expect("<div class='flex'></div>")
-        ->toCompileInto('<div class="flex" />');
+        ->toCompileInto('<div class="flex"></div>');
 
     it('returns node of with child content')
         ->expect("<div><span></span></div>")
-        ->toCompileInto('<div><span /></div>');
+        ->toCompileInto('<div><span></span></div>');
 
     it('returns node of with interpolated text')
         ->expect('<div>{{ $item }}</div>')

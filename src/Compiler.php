@@ -237,10 +237,6 @@ class Compiler
             return $childContent;
         }
 
-        if (trim($childContent) === '') {
-            return "<{$type}{$attributes} />";
-        }
-
         return "<{$type}{$attributes}>{$childContent}</{$type}>";
     }
 

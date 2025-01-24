@@ -24,7 +24,7 @@ describe('Renderer', function () {
     it('renders static content', function () {
         $rendered = renderTemplate("<div></div>");
 
-        expect($rendered)->toBe("<div />");
+        expect($rendered)->toBe("<div></div>");
     });
 
     it('renders nested static content', function () {
@@ -42,7 +42,7 @@ describe('Renderer', function () {
     it('renders interpolated attributes', function () {
         $rendered = renderTemplate("<input type=\"{{ 'button' }}\" />");
 
-        expect($rendered)->toBe('<input type="button" />');
+        expect($rendered)->toBe('<input type="button"></input>');
     });
 
     it('renders interpolated values from data array', function () {
