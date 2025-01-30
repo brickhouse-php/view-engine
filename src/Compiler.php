@@ -11,7 +11,7 @@ class Compiler
      *
      * @return array<int,callable(CompilerContext $context): string>
      */
-    private array $compilers = [
+    public array $pipeline = [
         \Brickhouse\View\Engine\Compilers\CompileAttributes::class,
         \Brickhouse\View\Engine\Compilers\CompileLayouts::class,
         \Brickhouse\View\Engine\Compilers\CompileFragments::class,
@@ -84,7 +84,7 @@ class Compiler
     public function compileNode(Node $node): string
     {
         $callable = fn(CompilerContext $context) => $this->render($context->node);
-        $compilerStack = $this->compilers;
+        $compilerStack = $this->pipeline;
 
         while ($compilerClass = array_pop($compilerStack)) {
             $callable = function (CompilerContext $context) use ($compilerClass, $callable) {
